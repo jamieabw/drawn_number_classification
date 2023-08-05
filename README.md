@@ -3,12 +3,12 @@ This is a simple application that allows you to draw a handwritten digit on a ca
 
 ## Prerequisites
 To run this application, you need to have the following dependencies installed:
-Python 3.x
-TensorFlow
-NumPy
-matplotlib
-PIL (Python Imaging Library)
-tkinter (for GUI)
+Python 3.x,
+TensorFlow,
+NumPy,
+matplotlib,
+PIL (Python Imaging Library),
+tkinter (for GUI),
 pickle (for model serialization)
 
 ## Installation
