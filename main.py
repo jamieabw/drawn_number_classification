@@ -1,5 +1,5 @@
 import pickle
-from tkinter import Button, Tk, Canvas, ALL, messagebox
+from tkinter import Button, Tk, Canvas, ALL, messagebox, Toplevel, Entry, Label
 from PIL import ImageGrab
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,11 +9,17 @@ SIZE = 30 # this size is used as im pretty sure it is the best size for the mode
 
 class Model:
     model = pickle.load(open("neural-network-model/model.pickle", "rb"))
-
     @classmethod 
     def predict(cls, image): # called to predict the number which has been drawn on the canvas
         predictions = cls.model.predict(np.array([image]))
         return np.argmax(predictions)
+    
+    @classmethod
+    def train(cls, image, correct, toplevel):
+        toplevel.destroy()
+        cls.model.fit(np.array([image]), np.array([int(correct)]))
+        pickle.dump(cls.model, open("neural-network-model/model.pickle", "wb"))
+        # trains the model on the data it got wrong, then saves the model 
         
 class DrawingApp:
     def __init__(self):
@@ -45,7 +51,19 @@ class DrawingApp:
         image = ImageGrab.grab().crop((x,y,x1,y1))
         image = np.abs((np.array(image.resize((28,28)).convert("L")) / 255) - 1)
         prediction = Model.predict(image)
-        messagebox.showinfo(title="Prediction", message=f"Model predicted: {prediction}")
+        ans = messagebox.askyesno(title="Prediction", message=f"Model predicted: {prediction}, is it correct?")
+        if ans is False: # if the answer is incorrect it will retrain on the specific data it was wrong on
+            toplevel = Toplevel(self.root)
+            toplevel.geometry("200x80")
+            toplevel.resizable(False, False)
+            label = Label(toplevel, text="Enter Correct Digit")
+            label.pack()
+            entry = Entry(toplevel, width=10)
+            entry.pack()
+            button = Button(toplevel, text="Submit", command=lambda : Model.train(image, entry.get(), toplevel))
+            button.pack()
+            toplevel.mainloop()
+
 
 def main():
     app = DrawingApp()
