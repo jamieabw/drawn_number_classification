@@ -6,15 +6,13 @@ To run this application, you need to have the following dependencies installed:
 Python 3.x,
 TensorFlow,
 NumPy,
-matplotlib,
 PIL (Python Imaging Library),
-tkinter (for GUI),
-pickle (for model serialization)
+tkinter (for GUI)
 
 ## Installation
 Clone or download this repository to your local machine.
 Make sure you have all the required dependencies installed (see Prerequisites section).
-Run the model.py file to train the neural network model and save it. (OPTIONAL - THERE IS ALREADY A MODEL.PICKLE FILE AVAILABLE)
+Run the model.py file to train the neural network model and save it. (OPTIONAL - THERE IS ALREADY A MODEL.H5 FILE AVAILABLE)
 Run the main.py file to launch the application.
 
 ## How to Use
