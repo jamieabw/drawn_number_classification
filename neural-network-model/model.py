@@ -15,9 +15,12 @@ data = keras.datasets.mnist # dataset from keras to train the model on handwritt
 train_images = train_images / 255 # make each pixel colour value a number between 0 and 1 inclusive
 test_images = test_images / 255
 model = keras.Sequential( [
-    keras.layers.Flatten(input_shape=(28, 28)), 
+    keras.layers.Conv2D(32, (3,3), activation="relu", input_shape=(28, 28, 1)),
+    keras.layers.MaxPool2D((2,2)),
+    keras.layers.Conv2D(32, (3,3), activation="relu"), # convolutional layers
+    keras.layers.Flatten(), 
     keras.layers.Dense(HLAYER_NEURONES[0], activation=HLAYER_ACTIVATION[0]),
-    keras.layers.Dense(10, activation="softmax")
+    keras.layers.Dense(10, activation="sigmoid")
 ])
 model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
 model.fit(train_images, train_labels, epochs=EPOCHS)
