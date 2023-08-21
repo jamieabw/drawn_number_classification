@@ -1,14 +1,12 @@
-import pickle
 from tkinter import Button, Tk, Canvas, ALL, messagebox, Toplevel, Entry, Label
 from PIL import ImageGrab
-import matplotlib.pyplot as plt
 import numpy as np
-
+from keras.models import load_model
 
 SIZE = 30 # this size is used as im pretty sure it is the best size for the model to classify the digit
 
 class Model:
-    model = pickle.load(open("neural-network-model/model.pickle", "rb"))
+    model = load_model("neural-network-model/model.h5")
     @classmethod 
     def predict(cls, image): # called to predict the number which has been drawn on the canvas
         predictions = cls.model.predict(np.array([image]))
@@ -18,9 +16,8 @@ class Model:
     def train(cls, image, correct, toplevel):
         toplevel.destroy()
         cls.model.fit(np.array([image]), np.array([int(correct)]))
-        pickle.dump(cls.model, open("neural-network-model/model.pickle", "wb"))
-        # trains the model on the data it got wrong, then saves the model 
-        
+        cls.model.save("neural-network-model/model.h5")
+        # trains the model on the data it got wrong, then saves the model         
 class DrawingApp:
     def __init__(self):
         self.root = Tk()
@@ -63,7 +60,6 @@ class DrawingApp:
             button = Button(toplevel, text="Submit", command=lambda : Model.train(image, entry.get(), toplevel))
             button.pack()
             toplevel.mainloop()
-
 
 def main():
     app = DrawingApp()

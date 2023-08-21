@@ -25,5 +25,4 @@ model = keras.Sequential( [
 model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
 model.fit(train_images, train_labels, epochs=EPOCHS)
 model.predict(test_images)
-with open("neural-network-model/model.pickle", "wb") as file:
-    pickle.dump(model, file) # saves the models progress so it doesnt have to retrain in the actual program
+model.save("neural-network-model/model.h5")  # saves the models progress so it doesnt have to retrain in the actual program
